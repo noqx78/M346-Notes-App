@@ -11,6 +11,28 @@
 | <img alt="Firebase Logo" src="https://tailwindcss.com/_next/static/media/tailwindcss-mark.d52e9897.svg" width="28"> | **Tailwind CSS** |  Styling
 | <img alt="Firebase Logo" src="https://ui.shadcn.com/apple-touch-icon.png" width="28"> | **Shadcn/UI** |  UI Libary
 
+---
+
+💾 Firestore FireStore Structur
+
+##### /users/${userId} 
+```
+{
+    email: "web@belastend.ch"
+    password: "belastend"
+}
+```
+
+##### /users/${userId}/tasks/${taskId}
+```
+{
+    title: "title"
+    desc: "description"
+    done: "false"
+}
+```
+
+---
 .env.local
 
 ```
