@@ -13,26 +13,6 @@
 
 ---
 
-💾 Firestore FireStore Structur
-
-##### /users/${userId} 
-```
-{
-    email: "web@belastend.ch"
-    password: "belastend"
-}
-```
-
-##### /users/${userId}/tasks/${taskId}
-```
-{
-    title: "title"
-    desc: "description"
-    done: "false"
-}
-```
-
----
 .env.local
 
 ```
