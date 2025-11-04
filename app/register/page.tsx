@@ -17,13 +17,13 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { LinkIcon } from "lucide-react";
 
 export default function Home() {
     return (
         <div className="relative min-h-screen overflow-hidden">
             <div
                 className="absolute inset-0 bg-center bg-no-repeat bg-cover"
-                style={{ backgroundImage: "url('/white-tree.jpg')" }}
             />
 
             <div className="relative z-10 flex min-h-screen items-center justify-center">
@@ -100,8 +100,13 @@ export default function Home() {
                         </CardContent>
                         <CardFooter className="flex-col gap-2">
                             <Button type="submit" className="w-full">
-                                Login
+                                Register
                             </Button>
+                            <Separator className="my--10 mt-1 mb-1" />
+                            <Button variant={"outline"} type="submit" className="w-4xs">
+                                <LinkIcon></LinkIcon><a href="login">Login</a>
+                            </Button>
+
                         </CardFooter>
                     </Card>
                 </main>
