@@ -87,7 +87,7 @@ export default function Home() {
                                     Enter your account email below to receive a password reset link.
                                 </DialogDescription>
                                 <span>
-                                <Input type="email" placeholder="Email" className="w-2xs" /> <Button className="ml-1"> <SendHorizonalIcon></SendHorizonalIcon>Send</Button>
+                                <Input type="email" placeholder="Email" className="w-2xs" /> <Button className="ml-1 mt-3"> <SendHorizonalIcon></SendHorizonalIcon>Send</Button>
                                 </span>
                             </DialogHeader>
                         </DialogContent>
