@@ -66,10 +66,6 @@ export default function Home() {
                     </Card>
                 </main>
             </div>
-
-            <p className="absolute bottom-4 w-full text-center text-gray-600 italic z-20">
-                image by <a href="https://www.pexels.com" className="underline">pexels.com</a>
-            </p>
         </div>
     );
 }
