@@ -22,6 +22,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { useState } from "react";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -30,7 +31,7 @@ export default function Home() {
         <div className="relative min-h-screen overflow-hidden">
             <div
                 className="absolute inset-0 bg-center bg-no-repeat bg-cover"
-                
+
             />
 
             <div className="relative z-10 flex min-h-screen items-center justify-center">
@@ -72,9 +73,15 @@ export default function Home() {
                                 Login
                             </Button>
                             <Separator className="my--10 mt-1 mb-1" />
-                            <Button variant={"outline"} type="submit" className="w-4xs">
-                                <LinkIcon></LinkIcon><a href="register">Register</a>
-                            </Button>
+                            <Link href="/register" passHref>
+                                <Button asChild variant="outline" className="w-4xs flex items-center gap-2">
+                                    <span className="flex items-center gap-2">
+                                        <LinkIcon />
+                                        Register
+                                    </span>
+                                </Button>
+                            </Link>
+
                         </CardFooter>
                     </Card>
 
@@ -87,7 +94,7 @@ export default function Home() {
                                     Enter your account email below to receive a password reset link.
                                 </DialogDescription>
                                 <span>
-                                <Input type="email" placeholder="Email" className="w-2xs" /> <Button className="ml-1 mt-3"> <SendHorizonalIcon></SendHorizonalIcon>Send</Button>
+                                    <Input type="email" placeholder="Email" className="w-2xs" /> <Button className="ml-1 mt-3"> <SendHorizonalIcon></SendHorizonalIcon>Send</Button>
                                 </span>
                             </DialogHeader>
                         </DialogContent>

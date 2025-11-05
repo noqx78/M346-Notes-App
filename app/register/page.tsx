@@ -18,6 +18,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { LinkIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
     return (
@@ -103,9 +104,14 @@ export default function Home() {
                                 Register
                             </Button>
                             <Separator className="my--10 mt-1 mb-1" />
-                            <Button variant={"outline"} type="submit" className="w-4xs">
-                                <LinkIcon></LinkIcon><a href="login">Login</a>
-                            </Button>
+                            <Link href="/login" passHref>
+                                <Button asChild variant="outline" className="w-4xs flex items-center gap-2">
+                                    <span className="flex items-center gap-2">
+                                        <LinkIcon />
+                                        Login
+                                    </span>
+                                </Button>
+                            </Link>
 
                         </CardFooter>
                     </Card>
