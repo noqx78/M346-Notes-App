@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -17,10 +18,51 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { toast } from "sonner"
 import { LinkIcon } from "lucide-react";
 import Link from "next/link";
 
+import { createUserWithEmailAndPassword, getAuth, User } from "firebase/auth";
+import { app, db, auth } from '../../lib/firebase'
+import { useState } from "react";
+import { error } from "console";
+
 export default function Home() {
+    const [name, setName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [user, setUser] = useState<User | null>(null);
+
+    const signUp = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(userCredential => {
+                setUser(userCredential.user);
+                console.log("User registered:", userCredential.user);
+                toast.success("Account successfully created", {
+                    position: "top-center",
+                    action: {
+                        label: "Undo",
+                        onClick: () => console.log("Undo clicked"),
+                    },
+                });
+
+
+            })
+            .catch(error => {
+                console.error("Error registering user:", error);
+                toast.error(`Error: ${error.message}`, {
+                    position: "top-center",
+                    action: {
+                        label: "Close",
+                        onClick: () => console.log("toast closed"),
+                    },
+                });
+            }
+            )
+    }
+
     return (
         <div className="relative min-h-screen overflow-hidden">
             <div
@@ -44,7 +86,7 @@ export default function Home() {
                                 <div className="flex flex-col gap-6">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="flex flex-col gap-2">
-                                            <Label htmlFor="firstName">First name</Label>
+                                            <Label htmlFor="firstName" >First name</Label>
                                             <Input
                                                 id="firstName"
                                                 type="text"
@@ -66,23 +108,32 @@ export default function Home() {
                                     <div className="grid gap-2">
                                         <Label htmlFor="email">Email</Label>
                                         <Input
-                                            id="email"
                                             type="email"
                                             placeholder="example@belastend.ch"
                                             required
+                                            value={email}
+                                            onChange={(event) => setEmail(event.target.value)}
                                         />
                                     </div>
                                     <div className="grid gap-2">
                                         <div className="flex items-center">
                                             <Label htmlFor="password">Password</Label>
                                         </div>
-                                        <Input id="password" type="password" required />
+                                        <Input
+                                            type="password"
+                                            required
+                                            value={password}
+                                            onChange={(event) => setPassword(event.target.value)} />
                                     </div>
                                     <div className="grid gap-2">
                                         <div className="flex items-center">
-                                            <Label htmlFor="password" className="">Confirm Password</Label>
+                                            <Label htmlFor="confirmPassword" className="">Confirm Password</Label>
                                         </div>
-                                        <Input id="password" type="password" required />
+                                        <Input
+                                            type="password"
+                                            required
+                                            value={confirmPassword}
+                                            onChange={(event) => setConfirmPassword(event.target.value)} />
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <Checkbox id="terms" />
@@ -100,7 +151,7 @@ export default function Home() {
                             </form>
                         </CardContent>
                         <CardFooter className="flex-col gap-2">
-                            <Button type="submit" className="w-full">
+                            <Button type="submit" className="w-full" onClick={signUp}>
                                 Register
                             </Button>
                             <Separator className="my--10 mt-1 mb-1" />
