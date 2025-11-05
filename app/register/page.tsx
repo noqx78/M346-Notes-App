@@ -21,6 +21,7 @@ import {
 import { toast } from "sonner"
 import { LinkIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { createUserWithEmailAndPassword, getAuth, User } from "firebase/auth";
 import { app, db, auth } from '../../lib/firebase'
@@ -34,6 +35,8 @@ export default function Home() {
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [user, setUser] = useState<User | null>(null);
 
+    const router = useRouter();
+
     const signUp = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         createUserWithEmailAndPassword(auth, email, password)
@@ -43,10 +46,11 @@ export default function Home() {
                 toast.success("Account successfully created", {
                     position: "top-center",
                     action: {
-                        label: "Undo",
-                        onClick: () => console.log("Undo clicked"),
+                        label: "Close",
+                        onClick: () => console.log("toast closed"),
                     },
                 });
+                router.push("/");
 
 
             })

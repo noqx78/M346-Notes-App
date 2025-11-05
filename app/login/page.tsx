@@ -23,9 +23,47 @@ import {
 } from "@/components/ui/dialog"
 import { useState } from "react";
 import Link from "next/link";
+import { toast } from "sonner"
+import { useRouter } from "next/navigation";
+
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, User } from "firebase/auth";
+import { app, db, auth } from '../../lib/firebase'
 
 
 export default function Home() {
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [user, setUser] = useState<User | null>(null);
+    const router = useRouter();
+
+    const signIn = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        signInWithEmailAndPassword(auth, email, password)
+            .then(userCredential => {
+                setUser(userCredential.user);
+                console.log("User logged in:", userCredential.user);
+                toast.success("Successfully logged in!", {
+                    position: "top-center",
+                    action: {
+                        label: "Close",
+                        onClick: () => console.log("toast closed"),
+                    },
+                });
+            })
+            .catch(error => {
+                console.error("Error logging in user:", error);
+                toast.error(`Error: ${error.message}`, {
+                    position: "top-center",
+                    action: {
+                        label: "Close",
+                        onClick: () => console.log("toast closed"),
+                    },
+                });
+            });
+        router.push("/");
+
+    }
+
     const [open, setOpen] = useState(false);
     return (
         <div className="relative min-h-screen overflow-hidden">
@@ -52,10 +90,11 @@ export default function Home() {
                                     <div className="grid gap-2">
                                         <Label htmlFor="email">Email</Label>
                                         <Input
-                                            id="email"
                                             type="email"
                                             placeholder="example@belastend.ch"
                                             required
+                                            value={email}
+                                            onChange={(event) => setEmail(event.target.value)}
                                         />
                                     </div>
                                     <div className="grid gap-2">
@@ -63,13 +102,17 @@ export default function Home() {
                                             <Label htmlFor="password">Password</Label>
                                             <Button variant="link" className="ml-auto inline-block text-sm font-normal underline-offset-4 hover:underline" onClick={() => setOpen(true)}>Forgot your password?</Button>
                                         </div>
-                                        <Input id="password" type="password" required />
+                                        <Input
+                                            type="password"
+                                            required
+                                            value={password}
+                                            onChange={(event) => setPassword(event.target.value)} />
                                     </div>
                                 </div>
                             </form>
                         </CardContent>
                         <CardFooter className="flex-col gap-2">
-                            <Button type="submit" className="w-full">
+                            <Button type="submit" className="w-full" onClick={signIn}>
                                 Login
                             </Button>
                             <Separator className="my--10 mt-1 mb-1" />
@@ -85,7 +128,6 @@ export default function Home() {
                         </CardFooter>
                     </Card>
 
-                    {/* password vergessen dialog */}
                     <Dialog open={open} onOpenChange={setOpen}>
                         <DialogContent>
                             <DialogHeader>
