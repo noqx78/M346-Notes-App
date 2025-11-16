@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import NotesNavigation from "@/components/NotesNavigation";
 import { useState } from "react"
 import { SerializedEditorState } from "lexical"
-import { Editor } from "@/components/blocks/editor-x/editor";
+
+import { Editor } from "@/components/blocks/editor-x/editor"
 
 export const initialValue = {
   root: {
@@ -35,20 +35,13 @@ export const initialValue = {
   },
 } as unknown as SerializedEditorState
 
-export default function Home() {
+export default function EditorPage() {
   const [editorState, setEditorState] =
     useState<SerializedEditorState>(initialValue)
   return (
-    <div className="flex min-h-screen">
-      <NotesNavigation />
-
-      <main className="flex-1 p-6">
-        <h1>This is content.</h1>
-            <Editor
+    <Editor
       editorSerializedState={editorState}
       onSerializedChange={(value) => setEditorState(value)}
     />
-      </main>
-    </div>
-  );
+  )
 }
