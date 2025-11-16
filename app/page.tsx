@@ -22,6 +22,7 @@ export default function Home() {
         <div className="flex flex-col text-muted-foreground gap-1">
           <a href="register" className="hover:underline">/register</a>
           <a href="login" className="hover:underline">/login</a>
+          <a href="notes" className="hover:underline">/notes</a>
           <Separator className="my-2" />
           {user ? (
             <h1>Welcome, {user.email}</h1>
