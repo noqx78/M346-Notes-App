@@ -107,7 +107,7 @@ import { Separator } from "@/components/ui/separator"
 const placeholder = "Press / for commands..."
 const maxLength = 500
 
-export function Plugins({}) {
+export function Plugins({ }) {
   const [floatingAnchorElem, setFloatingAnchorElem] =
     useState<HTMLDivElement | null>(null)
   const [isLinkEditMode, setIsLinkEditMode] = useState<boolean>(false)
@@ -276,7 +276,6 @@ export function Plugins({}) {
             <CounterCharacterPlugin charset="UTF-16" />
           </div>
           <div className="flex flex-1 justify-end">
-            <SpeechToTextPlugin />
             <ShareContentPlugin />
             <ImportExportPlugin />
             <MarkdownTogglePlugin
@@ -299,7 +298,6 @@ export function Plugins({}) {
               <ClearEditorActionPlugin />
               <ClearEditorPlugin />
             </>
-            <TreeViewPlugin />
           </div>
         </div>
       </ActionsPlugin>

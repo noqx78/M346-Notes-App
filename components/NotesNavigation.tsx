@@ -56,7 +56,7 @@ export default function NotesNavigation() {
           <Button className="bg-transparent hover:bg-transparent ">
             <Avatar>
               <AvatarImage src="" alt="User" />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarFallback>{user?.email?.[0]}</AvatarFallback>
             </Avatar>
             <p className="text-foreground text-sm">{user?.email}</p>
           </Button>
