@@ -6,6 +6,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "./ui/button";
 import { Separator } from "@radix-ui/react-separator";
 import { Input } from "./ui/input";
+import { signOut } from "firebase/auth";
+import { auth } from "../lib/firebase";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
 
 {/* 
     Todo:
@@ -42,14 +50,24 @@ export default function NotesNavigation() {
         Settings
       </Button>
 
-<Button variant="ghost">
-      <Avatar>
-        <AvatarImage src="" alt="User" />
-        <AvatarFallback>JD</AvatarFallback>
-      </Avatar>
-      <p className="text-foreground text-sm">{user?.email}</p>
-</Button>
 
-    </nav>
+      <ContextMenu>
+        <ContextMenuTrigger asChild>
+          <Button className="bg-transparent hover:bg-transparent ">
+            <Avatar>
+              <AvatarImage src="" alt="User" />
+              <AvatarFallback>JD</AvatarFallback>
+            </Avatar>
+            <p className="text-foreground text-sm">{user?.email}</p>
+          </Button>
+        </ContextMenuTrigger>
+
+        <ContextMenuContent>
+          <ContextMenuItem onSelect={() => signOut(auth)}>Logout</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+
+
+    </nav >
   );
 }

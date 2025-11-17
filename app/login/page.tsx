@@ -51,6 +51,7 @@ export default function Home() {
                         onClick: () => console.log("toast closed"),
                     },
                 });
+                router.push("/");
             })
             .catch(error => {
                 console.error("Error logging in user:", error);
@@ -62,7 +63,6 @@ export default function Home() {
                     },
                 });
             });
-        router.push("/");
 
     }
 
