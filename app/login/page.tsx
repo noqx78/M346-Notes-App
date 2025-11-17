@@ -26,14 +26,16 @@ import Link from "next/link";
 import { toast } from "sonner"
 import { useRouter } from "next/navigation";
 
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, User } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, User, sendPasswordResetEmail } from "firebase/auth";
 import { app, db, auth } from '../../lib/firebase'
+import { resetPassword } from "@/lib/resetPassword";
 
 
 export default function Home() {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [user, setUser] = useState<User | null>(null);
+    const [resetMail, setResetMail] = useState("");
     const router = useRouter();
 
     const signIn = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -63,6 +65,10 @@ export default function Home() {
         router.push("/");
 
     }
+
+
+
+
 
     const [open, setOpen] = useState(false);
     return (
@@ -136,7 +142,11 @@ export default function Home() {
                                     Enter your account email below to receive a password reset link.
                                 </DialogDescription>
                                 <span>
-                                    <Input type="email" placeholder="Email" className="w-2xs" /> <Button className="ml-1 mt-3"> <SendHorizonalIcon></SendHorizonalIcon>Send</Button>
+                                    <Input type="email" placeholder="Email" className="w-2xs" value={resetMail}
+                                        onChange={(e) => setResetMail(e.target.value)} /> <Button
+                                            onClick={() => resetPassword(resetMail)}
+                                            className="ml-1 mt-3"
+                                        > <SendHorizonalIcon></SendHorizonalIcon>Send</Button>
                                 </span>
                             </DialogHeader>
                         </DialogContent>
