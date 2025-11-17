@@ -26,10 +26,11 @@ import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, getAuth, User } from "firebase/auth";
 import { app, db, auth } from '../../lib/firebase'
 import { useState } from "react";
-import { error } from "console";
+import { createUser } from "@/lib/createUser";
 
 export default function Home() {
-    const [name, setName] = useState<string>("");
+    const [firstName, setfirstName] = useState<string>("");
+    const [lastName, setlastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -50,6 +51,7 @@ export default function Home() {
                         onClick: () => console.log("toast closed"),
                     },
                 });
+                createUser(userCredential.user.uid, firstName, lastName, email);
                 router.push("/");
 
 
@@ -96,6 +98,8 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="John"
                                                 required
+                                                value={firstName}
+                                                onChange={(event) => setfirstName(event.target.value)}
                                             />
                                         </div>
                                         <div className="flex flex-col gap-2">
@@ -105,6 +109,8 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Doe"
                                                 required
+                                                value={lastName}
+                                                onChange={(event) => setlastName(event.target.value)}
                                             />
                                         </div>
                                     </div>
