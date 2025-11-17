@@ -69,7 +69,6 @@ export default function Home() {
           editorSerializedState={editorState}
           onSerializedChange={(value) => setEditorState(value)}
         />
-        <Button onClick={() => console.log(initialValue)}>Text Log</Button>
       </main>
     </div>
   ) : (
