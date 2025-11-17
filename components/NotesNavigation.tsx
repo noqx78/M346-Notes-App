@@ -14,6 +14,17 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
+import { useState } from "react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { createNote } from "@/lib/createNote";
 
 {/* 
     Todo:
@@ -24,6 +35,7 @@ import {
 
 export default function NotesNavigation() {
   const { user } = useAuth();
+  const [open, setOpen] = useState(false);
 
   return (
     <nav className="flex flex-col p-6 gap-4 w-64 min-w-[16rem] min-h-screen  text-muted-foreground">
@@ -31,9 +43,45 @@ export default function NotesNavigation() {
 
       <Separator className="my-4 h-px bg-border" />
       <Input type="text" placeholder="Search for Notes" />
-      <Button variant="outline">
-        Create new Note
-      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="outline">Create New Note</Button>
+        </DialogTrigger>
+
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>New Note</DialogTitle>
+            <DialogDescription>
+              Create a new note below.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+
+              const title = new FormData(e.currentTarget).get("title");
+              console.log("create:", title);
+              createNote(user!.uid, title as string);
+
+              setOpen(false);
+            }}
+            className="space-y-4"
+          >
+            <Input
+              name="title"
+              type="text"
+              placeholder="Note Title"
+              required
+            />
+
+            <DialogFooter>
+              <Button type="submit">Create</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
 
 
       <div className="flex flex-col  place-items-stretch gap-1 ">

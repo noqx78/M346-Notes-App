@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import HamsterLoading from "@/components/HamsterLoading";
+import EditorPage from "../editor-x/page";
 
 export const initialValue = {
   root: {
@@ -68,6 +69,7 @@ export default function Home() {
           editorSerializedState={editorState}
           onSerializedChange={(value) => setEditorState(value)}
         />
+        <Button onClick={() => console.log(initialValue)}>Text Log</Button>
       </main>
     </div>
   ) : (

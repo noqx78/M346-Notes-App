@@ -1,5 +1,6 @@
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
+import { createNote } from "./createNote";
 
 async function createUser(userId: string, firstName: string, lastName: string, email: string) {
     try {
@@ -9,6 +10,8 @@ async function createUser(userId: string, firstName: string, lastName: string, e
             email: email
         });
         console.log("user created in database with ID:", userId);
+        createNote(userId, "template")
+
     } catch (error) {
         console.error("Error creating user in database:", error);
     }
