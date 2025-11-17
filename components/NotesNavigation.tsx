@@ -105,11 +105,10 @@ export default function NotesNavigation() {
         {noteNames.map((noteName) => (
           <div key={noteName} className="flex w-full gap-1">
             <Button
-              asChild
               variant="outline"
               className="flex-1 justify-start"
             >
-              <Link href={`/notes/${noteName}`}>{noteName}</Link>
+              {noteName}
             </Button>
 
             <Dialog>
@@ -159,7 +158,6 @@ export default function NotesNavigation() {
                     onClick={() => {
                       deleteNote(user!.uid, noteName);
                       setOpen(false);
-                      window.location.reload();
                     }}
                   >
                     Delete

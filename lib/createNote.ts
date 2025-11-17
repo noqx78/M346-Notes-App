@@ -79,7 +79,7 @@ async function createNote(userId: string, noteName: string) {
 }
 
 
-async function amountNotes(userId: string) {
+export async function amountNotes(userId: string) {
   const colRef = collection(db, "users", userId, "notes");
   const snapshot = await getDocs(colRef);
   console.log("snapshot size:", snapshot.size);
