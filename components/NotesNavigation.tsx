@@ -140,7 +140,7 @@ export default function NotesNavigation() {
 
       <ContextMenu>
         <ContextMenuTrigger asChild>
-          <Button className="bg-transparent hover:bg-transparent w-full justify-start gap-2">
+          <Button className="bg-transparent hover:bg-transparent w-full justify-start gap-2 hover:!cursor-default">
             <Avatar className="w-8 h-8">
               <AvatarImage src="" alt="User" />
               <AvatarFallback className="text-foreground">

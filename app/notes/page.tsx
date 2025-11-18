@@ -19,7 +19,6 @@ import HamsterLoading from "@/components/HamsterLoading";
 import EditorPage from "../editor-x/page";
 import { getCurrentNote } from "@/lib/globalVar";
 import { getNoteValue } from "@/lib/getNote";
-import { get } from "lodash";
 
 
 export const initialValue = {
@@ -71,20 +70,23 @@ export default function Home() {
       console.log(note.template);
     }
   }
-
   loadNote();
 
 
   return user ? (
     <div className="flex min-h-screen">
-      <NotesNavigation />
+      <div className="w-64 min-w-[16rem] border-r">
+        <NotesNavigation />
+      </div>
       <main className="flex-1 p-6">
-        <Editor
-          editorSerializedState={editorState}
-          onSerializedChange={(value) => setEditorState(value)}
-        />
-
-        <Button className="mt-4" onClick={() => console.log(editorState)}>Log</Button>
+        {activeNote ? (
+          <Editor
+            editorSerializedState={editorState}
+            onSerializedChange={(value) => setEditorState(value)}
+          />
+        ) : (
+          <p className="">No note is currently loaded.</p>
+        )}
       </main>
     </div>
   ) : (

@@ -2,6 +2,9 @@
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import NotesNavigation from "@/components/NotesNavigation";
 import { useAuth } from "@/hooks/useAuth";
+import { LogoutButton } from "@/components/userLogoutButton";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
     const { user, loading } = useAuth();
@@ -18,11 +21,18 @@ export default function Home() {
                 <div className="space-y-4">
                     <p>Email: {user?.email}</p>
                     <p>UID: {user?.uid}</p>
+                    {user ? (
+                        <LogoutButton />
+                    ) : <Link href="/login">
+                        <Button>Login</Button>
+                    </Link>
+                    }
 
                     <div className="h-px bg-border my-4"></div>
 
                     <p>Theme</p>
                     <ThemeSwitcher />
+
 
 
 
