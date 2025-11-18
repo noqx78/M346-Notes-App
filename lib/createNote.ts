@@ -65,6 +65,7 @@ async function createNote(userId: string, noteName: string) {
       } catch (error) {
         console.error(error);
       }
+      window.location.reload();
     }
     else {
       toast.error(`User has reached the maximum number of notes (10). Note not created.`, {
