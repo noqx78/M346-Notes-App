@@ -17,6 +17,10 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import HamsterLoading from "@/components/HamsterLoading";
 import EditorPage from "../editor-x/page";
+import { getCurrentNote } from "@/lib/globalVar";
+import { getNoteValue } from "@/lib/getNote";
+import { get } from "lodash";
+
 
 export const initialValue = {
   root: {
@@ -54,11 +58,21 @@ export default function Home() {
   const [open, setOpen] = useState(true);
   const [editorState, setEditorState] = useState<SerializedEditorState>(initialValue);
 
+  const activeNote = getCurrentNote();
 
   if (loading) return (
     <HamsterLoading />
   );
 
+  async function loadNote() {
+    if (!activeNote) return;
+    const note = await getNoteValue(user!.uid, activeNote);
+    if (note) {
+      console.log(note.template);
+    }
+  }
+
+  loadNote();
 
 
   return user ? (

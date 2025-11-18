@@ -28,6 +28,8 @@ import { getNotes } from "@/lib/getNotes";
 import { deleteNote } from "@/lib/deleteNote";
 import { PencilIcon, Trash2Icon, SettingsIcon } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
+import { setCurrentNote } from "@/lib/globalVar";
+import { useRouter } from "next/navigation";
 
 export default function NotesNavigation() {
   const { user } = useAuth();
@@ -39,6 +41,8 @@ export default function NotesNavigation() {
       getNotes(user.uid).then(setNoteNames);
     }
   }, [user]);
+
+  const router = useRouter();
 
   return (
     <nav className="flex flex-col p-6 gap-4 w-64 min-w-[16rem] min-h-screen text-muted-foreground">
@@ -87,9 +91,11 @@ export default function NotesNavigation() {
       <div className="flex flex-col gap-1">
         {noteNames.map((noteName) => (
           <ButtonGroup key={noteName} className="w-full">
+
             <Button
               variant="outline"
               className="flex-1 justify-start"
+              onClick={() => { setCurrentNote(noteName); router.replace("/notes"); }}
             >
               {noteName}
             </Button>
