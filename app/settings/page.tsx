@@ -5,13 +5,15 @@ import { useAuth } from "@/hooks/useAuth";
 import { LogoutButton } from "@/components/userLogoutButton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 export default function Home() {
     const { user, loading } = useAuth();
+    const [activeNote, setActiveNote] = useState<string | null>(null);
     return (
         <div className="flex min-h-screen">
             <div className="w-64 min-w-[16rem] border-r">
-                <NotesNavigation />
+                <NotesNavigation onSelect={setActiveNote} />
             </div>
 
             <div className="flex-1 p-6">

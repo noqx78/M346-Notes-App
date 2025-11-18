@@ -28,10 +28,13 @@ import { getNotes } from "@/lib/getNotes";
 import { deleteNote } from "@/lib/deleteNote";
 import { PencilIcon, Trash2Icon, SettingsIcon } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { setCurrentNote } from "@/lib/globalVar";
 import { useRouter } from "next/navigation";
 
-export default function NotesNavigation() {
+export default function NotesNavigation({
+  onSelect,
+}: {
+  onSelect: (noteId: string) => void;
+}) {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [noteNames, setNoteNames] = useState<string[]>([]);
@@ -95,7 +98,7 @@ export default function NotesNavigation() {
             <Button
               variant="outline"
               className="flex-1 justify-start"
-              onClick={() => { setCurrentNote(noteName); router.replace("/notes"); }}
+              onClick={() => onSelect(noteName)}
             >
               {noteName}
             </Button>

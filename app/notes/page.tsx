@@ -16,10 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import HamsterLoading from "@/components/HamsterLoading";
-import EditorPage from "../editor-x/page";
-import { getCurrentNote } from "@/lib/globalVar";
 import { getNoteValue } from "@/lib/getNote";
-
 
 export const initialValue = {
   root: {
@@ -31,7 +28,7 @@ export const initialValue = {
             format: 0,
             mode: "normal",
             style: "",
-            text: "Lorem ipsum dolor sit amet",
+            text: "Start typing your note...",
             type: "text",
             version: 1,
           },
@@ -55,37 +52,88 @@ export default function Home() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [open, setOpen] = useState(true);
-  const [editorState, setEditorState] = useState<SerializedEditorState>(initialValue);
+  const [editorState, setEditorState] = useState<SerializedEditorState | undefined>(undefined);
+  const [activeNote, setActiveNote] = useState<string>("");
+  const [isLoadingNote, setIsLoadingNote] = useState(false);
 
-  const activeNote = getCurrentNote();
+  const handleNoteSelect = (noteId: string) => {
+    if (noteId === activeNote) return;
 
-  if (loading) return (
-    <HamsterLoading />
-  );
-
-  async function loadNote() {
-    if (!activeNote) return;
-    const note = await getNoteValue(user!.uid, activeNote);
-    if (note) {
-      console.log(note.template);
+    if (noteId === "") {
+      setActiveNote("");
+      setEditorState(undefined);
+      return;
     }
-  }
-  loadNote();
 
+    setActiveNote(noteId);
+  };
+
+  useEffect(() => {
+    if (!activeNote || !user) {
+      setEditorState(undefined);
+      return;
+    }
+
+    let cancelled = false;
+    setIsLoadingNote(true);
+
+    async function loadNote() {
+      try {
+        const note = await getNoteValue(user!.uid, activeNote);
+        if (cancelled) return;
+
+        if (note?.template) {
+          setEditorState(JSON.parse(JSON.stringify(note.template)));
+        } else {
+          setEditorState(JSON.parse(JSON.stringify(initialValue)));
+        }
+      } catch (error) {
+        console.error("Error loading note:", error);
+        if (!cancelled) {
+          setEditorState(JSON.parse(JSON.stringify(initialValue)));
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoadingNote(false);
+        }
+      }
+    }
+
+    loadNote();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeNote, user]);
+
+  if (loading) return <HamsterLoading />;
 
   return user ? (
     <div className="flex min-h-screen">
       <div className="w-64 min-w-[16rem] border-r">
-        <NotesNavigation />
+        <NotesNavigation
+          onSelect={handleNoteSelect}
+        />
       </div>
       <main className="flex-1 p-6">
         {activeNote ? (
-          <Editor
-            editorSerializedState={editorState}
-            onSerializedChange={(value) => setEditorState(value)}
-          />
+          isLoadingNote ? (
+            <div className="flex items-center justify-center h-64">
+              <p className="text-muted-foreground">Loading note...</p>
+            </div>
+          ) : (
+            <Editor
+              key={activeNote}
+              editorSerializedState={editorState}
+              onSerializedChange={setEditorState}
+            />
+          )
         ) : (
-          <p className="">No note is currently loaded.</p>
+          <div className="flex items-center justify-center h-64">
+            <p className="text-muted-foreground">
+              Select a note from the sidebar or create a new one to get started.
+            </p>
+          </div>
         )}
       </main>
     </div>
@@ -102,8 +150,13 @@ export default function Home() {
           <DialogDescription>
             You are not logged in. No authentication detected. Please log in to access this feature.
           </DialogDescription>
-          <ButtonGroup className="mt-4">            <Button variant="outline" onClick={() => router.push("/login")}>Login</Button>
-            <Button variant="outline" onClick={() => router.push("/register")}>Register</Button>
+          <ButtonGroup className="mt-4">
+            <Button variant="outline" onClick={() => router.push("/login")}>
+              Login
+            </Button>
+            <Button variant="outline" onClick={() => router.push("/register")}>
+              Register
+            </Button>
           </ButtonGroup>
         </DialogHeader>
       </DialogContent>
