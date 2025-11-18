@@ -69,6 +69,8 @@ export default function Home() {
           editorSerializedState={editorState}
           onSerializedChange={(value) => setEditorState(value)}
         />
+
+        <Button className="mt-4" onClick={() => console.log(editorState)}>Log</Button>
       </main>
     </div>
   ) : (
@@ -84,8 +86,7 @@ export default function Home() {
           <DialogDescription>
             You are not logged in. No authentication detected. Please log in to access this feature.
           </DialogDescription>
-          <ButtonGroup className="mt-4">
-            <Button variant="outline" onClick={() => router.push("/login")}>Login</Button>
+          <ButtonGroup className="mt-4">            <Button variant="outline" onClick={() => router.push("/login")}>Login</Button>
             <Button variant="outline" onClick={() => router.push("/register")}>Register</Button>
           </ButtonGroup>
         </DialogHeader>

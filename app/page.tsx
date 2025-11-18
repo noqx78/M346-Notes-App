@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { NotebookPenIcon } from "lucide-react";
+import { LogoutButton } from "@/components/userLogoutButton";
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -61,22 +62,28 @@ export default function Home() {
 
         <div className="flex flex-col sm:flex-row gap-3">
           {[
-            { href: "/login", text: "Login", },
-            { href: "/register", text: "Register", },
+            { href: "/login", text: "Login", bgColor: "hover:bg-blue-50" },
+            { href: "/register", text: "Register", bgColor: "hover:bg-green-50" },
             { href: "/notes", text: "Notes", icon: <NotebookPenIcon className="w-4 h-4" />, },
           ].map((button, index) => (
             <BlurFade key={button.text} delay={1.0 + index * 0.1} inView>
               <Link href={button.href} passHref>
                 <Button
                   variant="outline"
-                  className={`w-full sm:w-auto justify-center gap-2 transition-transform hover:scale-105 `}
+                  className={`w-full sm:w-auto justify-center gap-2 transition-transform hover:scale-105`}
                 >
                   {button.icon} {button.text}
                 </Button>
               </Link>
             </BlurFade>
           ))}
+          {user && (
+            <BlurFade delay={1.3} inView>
+              <LogoutButton />
+            </BlurFade>
+          )}
         </div>
+
       </main>
       <LightRays />
     </div>
