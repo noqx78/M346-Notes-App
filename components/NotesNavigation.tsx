@@ -29,6 +29,8 @@ import { deleteNote } from "@/lib/deleteNote";
 import { PencilIcon, Trash2Icon, SettingsIcon } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function NotesNavigation({
   onSelect,
@@ -46,6 +48,7 @@ export default function NotesNavigation({
   }, [user]);
 
   const router = useRouter();
+  const pathName = usePathname();
 
   return (
     <nav className="flex flex-col p-6 gap-4 w-64 min-w-[16rem] min-h-screen text-muted-foreground">
@@ -98,10 +101,19 @@ export default function NotesNavigation({
             <Button
               variant="outline"
               className="flex-1 justify-start"
-              onClick={() => onSelect(noteName)}
+              onClick={() => {
+                const pathname = pathName;
+
+                if (pathname !== "/notes") {
+                  router.push("/notes");
+                }
+
+                onSelect(noteName);
+              }}
             >
               {noteName}
             </Button>
+
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" className="w-10 p-0 flex-none">
