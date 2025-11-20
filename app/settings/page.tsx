@@ -27,7 +27,7 @@ export default function Home() {
                     {user ? (
                         <>
                             <LogoutButton />
-                            <Button onClick={() => deleteUser(user)}>Delete Account</Button>
+                            <Button className="ml-2" variant="destructive" onClick={() => deleteUser(user)}>Delete Account</Button>
                         </>
                     ) : <Link href="/login">
                         <Button>Login</Button>
