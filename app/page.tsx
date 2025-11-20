@@ -15,7 +15,7 @@ export default function Home() {
 
   const contributors = [
     { name: "Noel", src: "https://avatars.githubusercontent.com/u/123118803?v=4", link: "https://github.com/noqx78" },
-    { name: "Kilian", src: "https://avatars.githubusercontent.com/u/188568105?v=4", link: "" },
+    { name: "Kilian", src: "https://avatars.githubusercontent.com/u/188568105?v=4", link: "https://github.com/KilianSchoeberl" },
     { name: "Elias", src: "https://avatars.githubusercontent.com/u/234014123?v=4", link: "https://github.com/Specter0408" },
   ];
 

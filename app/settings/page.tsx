@@ -6,6 +6,7 @@ import { LogoutButton } from "@/components/userLogoutButton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { getAuth, deleteUser } from "firebase/auth";
 
 export default function Home() {
     const { user, loading } = useAuth();
@@ -24,7 +25,10 @@ export default function Home() {
                     <p>Email: {user?.email}</p>
                     <p>UID: {user?.uid}</p>
                     {user ? (
-                        <LogoutButton />
+                        <>
+                            <LogoutButton />
+                            <Button onClick={() => deleteUser(user)}>Delete Account</Button>
+                        </>
                     ) : <Link href="/login">
                         <Button>Login</Button>
                     </Link>
