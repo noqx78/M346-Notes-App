@@ -66,7 +66,7 @@ export function TypingPerfPlugin(): JSX.Element | null {
         const total = log.reduce((a, b) => a + b, 0)
         const reportedText =
           "Typing Perf: " + Math.round((total / log.length) * 100) / 100 + "ms"
-        report(reportedText)
+        // report(reportedText)
         log = []
       }, 2000)
       // Make the time after we do the previous logic, so we don't measure the overhead
