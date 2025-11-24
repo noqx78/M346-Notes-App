@@ -7,6 +7,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { getAuth, deleteUser } from "firebase/auth";
+import { deleteUserFromDatabase } from "@/lib/deleteAccountDatabase";
+
 
 export default function Home() {
     const { user, loading } = useAuth();
@@ -27,7 +29,17 @@ export default function Home() {
                     {user ? (
                         <>
                             <LogoutButton />
-                            <Button className="ml-2" variant="destructive" onClick={() => deleteUser(user)}>Delete Account</Button>
+                            <Button
+                                className="ml-2"
+                                variant="destructive"
+                                onClick={() => {
+                                    deleteUser(user);
+                                    deleteUserFromDatabase(user.uid);
+                                }}
+                            >
+                                Delete Account
+                            </Button>
+
                         </>
                     ) : <Link href="/login">
                         <Button>Login</Button>

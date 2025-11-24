@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import HamsterLoading from "@/components/HamsterLoading";
 import { getNoteValue } from "@/lib/getNote";
+import { saveNoteValue } from "@/lib/saveNote";
 
 export const initialValue = {
   root: {
@@ -48,6 +49,7 @@ export const initialValue = {
   },
 } as unknown as SerializedEditorState;
 
+
 export default function Home() {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -74,6 +76,8 @@ export default function Home() {
       return;
     }
 
+
+
     let cancelled = false;
     setIsLoadingNote(true);
 
@@ -83,7 +87,7 @@ export default function Home() {
         if (cancelled) return;
 
         if (note?.template) {
-          setEditorState(JSON.parse(JSON.stringify(note.template)));
+          setEditorState(note.template ?? initialValue);
         } else {
           setEditorState(JSON.parse(JSON.stringify(initialValue)));
         }
@@ -122,11 +126,18 @@ export default function Home() {
               <p className="text-muted-foreground">Loading note...</p>
             </div>
           ) : (
-            <Editor
-              key={activeNote}
-              editorSerializedState={editorState}
-              onSerializedChange={setEditorState}
-            />
+            <>
+              <Editor
+                key={activeNote}
+                editorSerializedState={editorState}
+                onSerializedChange={setEditorState}
+              />
+
+              <Button
+                onClick={() => editorState && saveNoteValue(user.uid, activeNote, editorState)}>
+                Save Note
+              </Button>
+            </>
           )
         ) : (
           <div className="flex items-center justify-center h-64">

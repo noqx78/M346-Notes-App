@@ -9,9 +9,26 @@ import Link from "next/link";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { NotebookPenIcon, SettingsIcon } from "lucide-react";
 import { LogoutButton } from "@/components/userLogoutButton";
+import { getUserInfo, UserInfo } from "@/lib/getUserInfo";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const { user, loading } = useAuth();
+  const [fullName, setFullName] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!user) return;
+
+    async function fetchCurrentUserName() {
+      const allUsers = await getUserInfo();
+      const currentUser = allUsers.find((u: UserInfo) => u.email === user?.email);
+      if (currentUser) {
+        setFullName(`${currentUser.firstName} ${currentUser.lastName}`);
+      }
+    }
+
+    fetchCurrentUserName();
+  }, [user]);
 
   const contributors = [
     { name: "Noel", src: "https://avatars.githubusercontent.com/u/123118803?v=4", link: "https://github.com/noqx78" },
@@ -34,7 +51,7 @@ export default function Home() {
         {user && (
           <BlurFade delay={0.35} inView>
             <Card className="max-w-xs p-4">
-              <h1 className="text-sm md:text-base">Welcome, {user.email}</h1>
+              <h1 className="text-sm md:text-base">Welcome, {fullName}</h1>
             </Card>
           </BlurFade>
         )}
