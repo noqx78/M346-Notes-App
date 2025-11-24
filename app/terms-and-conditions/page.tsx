@@ -9,8 +9,6 @@ export default function TermsAndConditions() {
                 By using this application, you agree to the following rules: <br />
                 - Do not exploit bugs or vulnerabilities. <br />
                 - Do not perform denial-of-service (DDoS) attacks. <br />
-                - Do not spam, abuse, or overload any API endpoints. <br />
-                - Respect other users and their data. <br />
                 - Any violation may result in account suspension or deletion.
             </p>
             <br></br>
