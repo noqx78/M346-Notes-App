@@ -4,7 +4,7 @@ import { SerializedEditorState } from "lexical";
 
 async function saveNoteValue(userId: string, noteName: string, text: SerializedEditorState) {
   const ref = doc(db, "users", userId, "notes", noteName);
-    await setDoc(ref, { text });
+    await setDoc(ref, { template: { text: text } });
     console.log("Note saved successfully");
 }
 

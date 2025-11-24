@@ -19,95 +19,84 @@ import HamsterLoading from "@/components/HamsterLoading";
 import { getNoteValue } from "@/lib/getNote";
 import { saveNoteValue } from "@/lib/saveNote";
 
-export const initialValue = {
+export const initialValue: SerializedEditorState = {
   root: {
+    type: "root",
+    version: 1,
     children: [
       {
+        type: "paragraph",
+        version: 1,
         children: [
           {
+            type: "text",
+            text: "Start typing your note...",
             detail: 0,
             format: 0,
-            mode: "normal",
             style: "",
-            text: "Start typing your note...",
-            type: "text",
+            mode: "normal",
             version: 1,
           },
         ],
         direction: "ltr",
         format: "",
         indent: 0,
-        type: "paragraph",
-        version: 1,
       },
     ],
     direction: "ltr",
     format: "",
     indent: 0,
-    type: "root",
-    version: 1,
   },
-} as unknown as SerializedEditorState;
-
+};
 
 export default function Home() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [open, setOpen] = useState(true);
-  const [editorState, setEditorState] = useState<SerializedEditorState | undefined>(undefined);
-  const [activeNote, setActiveNote] = useState<string>("");
+  const [editorState, setEditorState] = useState<SerializedEditorState>(initialValue);
+  const [activeNote, setActiveNote] = useState<string | null>(null);
   const [isLoadingNote, setIsLoadingNote] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const handleNoteSelect = (noteId: string) => {
     if (noteId === activeNote) return;
-
-    if (noteId === "") {
-      setActiveNote("");
-      setEditorState(undefined);
-      return;
-    }
-
-    setActiveNote(noteId);
+    setIsLoadingNote(true);
+    setActiveNote(noteId || null);
   };
 
   useEffect(() => {
     if (!activeNote || !user) {
-      setEditorState(undefined);
+      setEditorState(initialValue);
       return;
     }
 
-
-
     let cancelled = false;
-    setIsLoadingNote(true);
 
-    async function loadNote() {
+    const loadNote = async () => {
       try {
-        const note = await getNoteValue(user!.uid, activeNote);
+        const note = await getNoteValue(user.uid, activeNote);
         if (cancelled) return;
 
-        if (note?.template) {
-          setEditorState(note.template ?? initialValue);
-        } else {
-          setEditorState(JSON.parse(JSON.stringify(initialValue)));
+        if (note?.template?.text) {
+          setEditorState(note.template.text as SerializedEditorState);
+        } else if (note?.text && typeof note.text === 'object' && 'root' in note.text) {
+          setEditorState(note.text as SerializedEditorState);
+        }
+        else if (note?.template && typeof note.template === 'object' && 'root' in note.template) {
+          setEditorState(note.template as SerializedEditorState);
+        }
+        else {
+          setEditorState(initialValue);
         }
       } catch (error) {
         console.error("Error loading note:", error);
-        if (!cancelled) {
-          setEditorState(JSON.parse(JSON.stringify(initialValue)));
-        }
+        if (!cancelled) setEditorState(initialValue);
       } finally {
-        if (!cancelled) {
-          setIsLoadingNote(false);
-        }
+        if (!cancelled) setIsLoadingNote(false);
       }
-    }
+    };
 
     loadNote();
-
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [activeNote, user]);
 
   if (loading) return <HamsterLoading />;
@@ -115,9 +104,7 @@ export default function Home() {
   return user ? (
     <div className="flex min-h-screen">
       <div className="w-64 min-w-[16rem] border-r">
-        <NotesNavigation
-          onSelect={handleNoteSelect}
-        />
+        <NotesNavigation onSelect={handleNoteSelect} />
       </div>
       <main className="flex-1 p-6">
         {activeNote ? (
@@ -128,13 +115,15 @@ export default function Home() {
           ) : (
             <>
               <Editor
-                key={activeNote}
                 editorSerializedState={editorState}
                 onSerializedChange={setEditorState}
               />
-
               <Button
-                onClick={() => editorState && saveNoteValue(user.uid, activeNote, editorState)}>
+                onClick={() =>
+                  editorState &&
+                  saveNoteValue(user.uid, activeNote, editorState)
+                }
+              >
                 Save Note
               </Button>
             </>
@@ -151,23 +140,17 @@ export default function Home() {
   ) : (
     <Dialog
       open={open}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) setOpen(true);
-      }}
+      onOpenChange={(isOpen) => { if (!isOpen) setOpen(true); }}
     >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Access Denied</DialogTitle>
           <DialogDescription>
-            You are not logged in. No authentication detected. Please log in to access this feature.
+            You are not logged in. Please log in to access this feature.
           </DialogDescription>
           <ButtonGroup className="mt-4">
-            <Button variant="outline" onClick={() => router.push("/login")}>
-              Login
-            </Button>
-            <Button variant="outline" onClick={() => router.push("/register")}>
-              Register
-            </Button>
+            <Button variant="outline" onClick={() => router.push("/login")}>Login</Button>
+            <Button variant="outline" onClick={() => router.push("/register")}>Register</Button>
           </ButtonGroup>
         </DialogHeader>
       </DialogContent>
