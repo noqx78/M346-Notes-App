@@ -117,7 +117,6 @@ export function ElementFormatToolbarPlugin({
         defaultValue={elementFormat}
         onValueChange={handleValueChange}
       >
-        {/* Alignment toggles */}
         {Object.entries(ELEMENT_FORMAT_OPTIONS).map(([value, option]) => (
           <ToggleGroupItem
             key={value}
@@ -131,7 +130,6 @@ export function ElementFormatToolbarPlugin({
         ))}
       </ToggleGroup>
       {separator && <Separator orientation="vertical" className="!h-7" />}
-      {/* Indentation toggles */}
       <ToggleGroup
         type="single"
         value={elementFormat}

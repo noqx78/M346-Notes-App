@@ -114,6 +114,7 @@ export default function Home() {
       <div className="w-64 min-w-[16rem] border-r">
         <NotesNavigation onSelect={handleNoteSelect} />
       </div>
+
       <main className="flex-1 flex flex-col p-6">
         {activeNote ? (
           isLoadingNote ? (

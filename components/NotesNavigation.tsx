@@ -26,11 +26,15 @@ import {
 import { createNote } from "@/lib/createNote";
 import { getNotes } from "@/lib/getNotes";
 import { deleteNote } from "@/lib/deleteNote";
-import { PencilIcon, Trash2Icon, SettingsIcon } from "lucide-react";
+import { Trash2Icon, SettingsIcon, MenuIcon } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { useRouter } from "next/navigation";
-import { redirect } from "next/navigation";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export default function NotesNavigation({
   onSelect,
@@ -40,6 +44,10 @@ export default function NotesNavigation({
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [noteNames, setNoteNames] = useState<string[]>([]);
+  const [currentNoteName, setCurrentNoteName] = useState<string | null>(null);
+
+  const router = useRouter();
+  const pathName = usePathname();
 
   useEffect(() => {
     if (user) {
@@ -47,15 +55,11 @@ export default function NotesNavigation({
     }
   }, [user]);
 
-  const router = useRouter();
-  const pathName = usePathname();
-  const [activeNote, setActiveNote] = useState<string | null>(null);
+  const NavigationContent = (
+    <nav className="flex flex-col p-6 gap-4 w-64 min-w-[16rem] text-muted-foreground">
+      <h1 className="text-lg font-bold">Notes{currentNoteName ? ` / ${currentNoteName}` : ""}</h1>
 
-  return (
-    <nav className="flex flex-col p-6 gap-4 w-64 min-w-[16rem] min-h-screen text-muted-foreground">
-      <h1 className="text-lg font-bold">Notes/{activeNote}</h1>
       <Separator className="my-4 h-px bg-border" />
-      {/* <Input type="text" placeholder="Search for Notes" /> */}
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
@@ -63,13 +67,13 @@ export default function NotesNavigation({
             Create New Note
           </Button>
         </DialogTrigger>
+
         <DialogContent>
           <DialogHeader>
             <DialogTitle>New Note</DialogTitle>
-            <DialogDescription>
-              Create a new note below.
-            </DialogDescription>
+            <DialogDescription>Create a new note below.</DialogDescription>
           </DialogHeader>
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -79,12 +83,8 @@ export default function NotesNavigation({
             }}
             className="space-y-4"
           >
-            <Input
-              name="title"
-              type="text"
-              placeholder="Note Title"
-              required
-            />
+            <Input name="title" placeholder="Note Title" required />
+
             <DialogFooter>
               <Button type="submit">Create</Button>
             </DialogFooter>
@@ -94,22 +94,18 @@ export default function NotesNavigation({
 
       <Separator className="my-1 h-px bg-border" />
 
-      {/* Notes List */}
       <div className="flex flex-col gap-1">
         {noteNames.map((noteName) => (
           <ButtonGroup key={noteName} className="w-full">
-
             <Button
               variant="outline"
               className="flex-1 justify-start"
               onClick={() => {
-                const pathname = pathName;
-
-                if (pathname !== "/notes") {
+                if (pathName !== "/notes") {
                   router.push("/notes");
                 }
-
                 onSelect(noteName);
+                setCurrentNoteName(noteName);
               }}
             >
               {noteName}
@@ -121,20 +117,20 @@ export default function NotesNavigation({
                   <Trash2Icon className="w-4 h-4" />
                 </Button>
               </DialogTrigger>
+
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Delete Note?</DialogTitle>
                   <DialogDescription>
                     Note: {noteName} <br />
-                    This action cannot be undone. The note will be permanently deleted.
+                    This action cannot be undone.
                   </DialogDescription>
                 </DialogHeader>
+
                 <div className="flex justify-end gap-2 mt-4">
                   <Button
                     variant="destructive"
-                    onClick={() => {
-                      deleteNote(user!.uid, noteName);
-                    }}
+                    onClick={() => deleteNote(user!.uid, noteName)}
                   >
                     Delete
                   </Button>
@@ -159,17 +155,42 @@ export default function NotesNavigation({
           <Button className="bg-transparent hover:bg-transparent w-full justify-start gap-2 hover:!cursor-default">
             <Avatar className="w-8 h-8">
               <AvatarImage src="" alt="User" />
-              <AvatarFallback className="text-foreground">
-                {user?.email?.[0]}
-              </AvatarFallback>
+              <AvatarFallback>{user?.email?.[0]}</AvatarFallback>
             </Avatar>
+
             <p className="text-foreground text-sm truncate">{user?.email}</p>
           </Button>
         </ContextMenuTrigger>
+
         <ContextMenuContent>
-          <ContextMenuItem onSelect={() => signOut(auth)}>Logout</ContextMenuItem>
+          <ContextMenuItem onSelect={() => signOut(auth)}>
+            Logout
+          </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
     </nav>
+  );
+
+  return (
+    <>
+      <div className="hidden md:block min-h-screen border-r">
+        {NavigationContent}
+      </div>
+
+      <div className="md:hidden p-4">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" className="flex items-center gap-2">
+              <MenuIcon className="w-5 h-5" />
+              Notes Menu
+            </Button>
+          </SheetTrigger>
+
+          <SheetContent side="top" className="p-0">
+            {NavigationContent}
+          </SheetContent>
+        </Sheet>
+      </div>
+    </>
   );
 }
