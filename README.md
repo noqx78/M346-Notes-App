@@ -1,16 +1,22 @@
-### M346 Cloud Projekt
+## M346 Cloud Projekt
+#### Timeline: Oct 2025 - Dec 2025
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fhello-world)
 
 ---
+
 
 #### Tech Stack
 
 |                                                                                                                                                        |                  |                      |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------- | -------------------- |
 | <img alt="Next.js Logo" src="https://cdn.brandfetch.io/id2alue-rx/w/394/h/80/theme/light/logo.png?c=1bxid64Mup7aczewSAYMX&t=1714556231978" width="64"> | **Next.js**      | _Frontend & Backend_ |
+| <img alt="Verecel Logo" src="https://registry.npmmirror.com/@lobehub/icons-static-png/1.74.0/files/dark/vercel.png" width="28">                                                                              | **Vercel**       | Hosting         |
 | <img alt="Firebase Logo" src="https://brandlogos.net/wp-content/uploads/2025/03/firebase_icon-logo_brandlogos.net_tcvck-512x646.png" width="28">       | **Firebase**     | Database             |
 | <img alt="tailwind Logo" src="https://tailwindcss.com/_next/static/media/tailwindcss-mark.d52e9897.svg" width="28">                                    | **Tailwind CSS** | Styling              |
 | <img alt="shadcn logo" src="https://ui.shadcn.com/apple-touch-icon.png" width="28">                                                                    | **Shadcn/UI**    | UI Libary            |
 | <img alt="Lucide Logo" src="https://lucide.dev/logo.dark.svg" width="28">                                                                              | **Lucide**       | Icon Libary          |
+
+
 
 ---
 
@@ -38,7 +44,6 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
 NEXT_PUBLIC_FIREBASE_APP_ID=
 NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=
-NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY=optional
 ```
 
 <h2 id="colab">Contributors</h2>
