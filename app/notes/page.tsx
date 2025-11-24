@@ -1,5 +1,4 @@
 "use client";
-
 import NotesNavigation from "@/components/NotesNavigation";
 import { useState, useEffect } from "react";
 import { SerializedEditorState } from "lexical";
@@ -70,14 +69,11 @@ export default function Home() {
       setEditorState(initialValue);
       return;
     }
-
     let cancelled = false;
-
     const loadNote = async () => {
       try {
         const note = await getNoteValue(user.uid, activeNote);
         if (cancelled) return;
-
         if (note?.template?.text) {
           setEditorState(note.template.text as SerializedEditorState);
         } else if (note?.text && typeof note.text === 'object' && 'root' in note.text) {
@@ -96,7 +92,6 @@ export default function Home() {
         if (!cancelled) setIsLoadingNote(false);
       }
     };
-
     loadNote();
     return () => { cancelled = true; };
   }, [activeNote, user]);
@@ -108,17 +103,16 @@ export default function Home() {
       <div className="w-64 min-w-[16rem] border-r">
         <NotesNavigation onSelect={handleNoteSelect} />
       </div>
-      <main className="flex-1 p-6">
+      <main className="flex-1 flex flex-col p-6">
         {activeNote ? (
           isLoadingNote ? (
-            <div className="flex items-center justify-center h-64">
+            <div className="flex items-center justify-center flex-1">
               <p className="text-muted-foreground">Loading note...</p>
             </div>
           ) : (
             <>
-              <span className="flex">
+              <div className="flex items-center mb-2">
                 <Button
-                  className="mb-2"
                   onClick={() => {
                     saveNoteValue(user.uid, activeNote, editorState);
                     setlastSaved(new Date().toLocaleTimeString());
@@ -126,25 +120,25 @@ export default function Home() {
                 >
                   <SaveIcon className="mr-2 h-4 w-4" /> Save
                 </Button>
-
-                <p className="ml-4">{lastSaved && `Last saved at ${lastSaved}`}</p>
-              </span>
-
-              <Editor
-                editorSerializedState={editorState}
-                onSerializedChange={setEditorState}
-              />
+                {lastSaved && <p className="ml-4">Last saved at {lastSaved}</p>}
+              </div>
+              <div className=" overflow-auto">
+                <Editor
+                  editorSerializedState={editorState}
+                  onSerializedChange={setEditorState}
+                />
+              </div>
             </>
           )
         ) : (
-          <div className="flex items-center justify-center h-64">
+          <div className="flex items-center justify-center flex-1">
             <p className="text-muted-foreground">
               Select a note from the sidebar or create a new one to get started.
             </p>
           </div>
         )}
       </main>
-    </div >
+    </div>
   ) : (
     <Dialog
       open={open}
