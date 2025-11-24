@@ -17,7 +17,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import HamsterLoading from "@/components/HamsterLoading";
 import { getNoteValue } from "@/lib/getNote";
 import { saveNoteValue } from "@/lib/saveNote";
-import { SaveIcon } from "lucide-react";
+import { SaveIcon, MonitorIcon } from "lucide-react";
 
 export const initialValue: SerializedEditorState = {
   root: {
@@ -56,7 +56,18 @@ export default function Home() {
   const [activeNote, setActiveNote] = useState<string | null>(null);
   const [isLoadingNote, setIsLoadingNote] = useState(false);
   const [open, setOpen] = useState(true);
+  const [SizeWarning, setSizeWarning] = useState(true);
   const [lastSaved, setlastSaved] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (screen.width < 768) {
+      setSizeWarning(true);
+    } else if (screen.width >= 768 && screen.width <= 1024) {
+      setSizeWarning(true);
+    } else {
+      setSizeWarning(false);
+    }
+  }, []);
 
   const handleNoteSelect = (noteId: string) => {
     if (noteId === activeNote) return;
@@ -138,24 +149,50 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      <Dialog
+        open={SizeWarning}
+        onOpenChange={setSizeWarning}
+      >
+        <DialogContent>
+          <div className="w-full flex flex-col items-center justify-center gap-3">
+            <MonitorIcon className="h-12 w-12" />
+
+            <DialogHeader className="text-center">
+              <DialogTitle>Screen Size Warning</DialogTitle>
+              <DialogDescription>
+                Your screen size may not be optimal for this application.
+              </DialogDescription>
+            </DialogHeader>
+
+            <Button onClick={() => setSizeWarning(false)}>Close</Button>
+          </div>
+        </DialogContent>
+
+      </Dialog>
+
+
     </div>
+
   ) : (
-    <Dialog
-      open={open}
-      onOpenChange={(isOpen) => { if (!isOpen) setOpen(true); }}
-    >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Access Denied</DialogTitle>
-          <DialogDescription>
-            You are not logged in. Please log in to access this feature.
-          </DialogDescription>
-          <ButtonGroup className="mt-4">
-            <Button variant="outline" onClick={() => router.push("/login")}>Login</Button>
-            <Button variant="outline" onClick={() => router.push("/register")}>Register</Button>
-          </ButtonGroup>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+    <>
+      <Dialog
+        open={open}
+        onOpenChange={(isOpen) => { if (!isOpen) setOpen(true); }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Access Denied</DialogTitle>
+            <DialogDescription>
+              You are not logged in. Please log in to access this feature.
+            </DialogDescription>
+            <ButtonGroup className="mt-4">
+              <Button variant="outline" onClick={() => router.push("/login")}>Login</Button>
+              <Button variant="outline" onClick={() => router.push("/register")}>Register</Button>
+            </ButtonGroup>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
