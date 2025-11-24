@@ -7,7 +7,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { getAuth, deleteUser } from "firebase/auth";
-import { deleteUserFromDatabase } from "@/lib/deleteAccountDatabase";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 
 export default function Home() {
@@ -34,7 +35,8 @@ export default function Home() {
                                 variant="destructive"
                                 onClick={() => {
                                     deleteUser(user);
-                                    deleteUserFromDatabase(user.uid);
+                                    deleteDoc(doc(db, "users", user.uid));
+                                    deleteDoc(doc(db, "users", user.uid, "notes"));
                                 }}
                             >
                                 Delete Account

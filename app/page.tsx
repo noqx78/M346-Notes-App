@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { NotebookPenIcon, SettingsIcon } from "lucide-react";
+import { NotebookPenIcon, SettingsIcon, ShieldClose, ShieldUserIcon } from "lucide-react";
 import { LogoutButton } from "@/components/userLogoutButton";
 import { getUserInfo, UserInfo } from "@/lib/getUserInfo";
 import { useEffect, useState } from "react";
@@ -102,6 +102,7 @@ export default function Home() {
               {[
                 { href: "/notes", text: "Notes", icon: <NotebookPenIcon className="w-4 h-4" /> },
                 { href: "/settings", text: "Settings", icon: <SettingsIcon className="w-4 h-4" /> },
+                { href: "/terms-and-conditions", text: "Terms and Conditions", icon: <ShieldUserIcon className="w-4 h-4" /> }
 
               ].map((button, index) => (
                 <BlurFade key={button.text} delay={1.0 + index * 0.1} inView>

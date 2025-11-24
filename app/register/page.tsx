@@ -146,16 +146,14 @@ export default function Home() {
                                             onChange={(event) => setConfirmPassword(event.target.value)} />
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <Checkbox id="terms" />
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Label htmlFor="terms">Accept terms and conditions</Label>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>dont exploit, dont hack and pls no ddos:(</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-
+                                        <Link href="/terms-and-conditions" target="_blank" >
+                                            <Label
+                                                htmlFor="terms"
+                                                className="secondary text-center mx-auto flex justify-center hover:cursor-pointer"
+                                            >
+                                                By registering, you accept the terms and conditions
+                                            </Label>
+                                        </Link>
                                     </div>
                                 </div>
                             </form>
