@@ -276,7 +276,7 @@ export function Plugins({ }) {
             <CounterCharacterPlugin charset="UTF-16" />
           </div>
           <div className="flex flex-1 justify-end">
-            <ShareContentPlugin />
+            {/* <ShareContentPlugin /> */}
             <ImportExportPlugin />
             <MarkdownTogglePlugin
               shouldPreserveNewLinesInMarkdown={true}
