@@ -49,12 +49,13 @@ export default function NotesNavigation({
 
   const router = useRouter();
   const pathName = usePathname();
+  const [activeNote, setActiveNote] = useState<string | null>(null);
 
   return (
     <nav className="flex flex-col p-6 gap-4 w-64 min-w-[16rem] min-h-screen text-muted-foreground">
-      <h1 className="text-lg font-bold">Notes</h1>
+      <h1 className="text-lg font-bold">Notes/{activeNote}</h1>
       <Separator className="my-4 h-px bg-border" />
-      <Input type="text" placeholder="Search for Notes" />
+      {/* <Input type="text" placeholder="Search for Notes" /> */}
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>

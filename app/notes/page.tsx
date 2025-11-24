@@ -18,6 +18,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import HamsterLoading from "@/components/HamsterLoading";
 import { getNoteValue } from "@/lib/getNote";
 import { saveNoteValue } from "@/lib/saveNote";
+import { SaveIcon } from "lucide-react";
 
 export const initialValue: SerializedEditorState = {
   root: {
@@ -56,6 +57,7 @@ export default function Home() {
   const [activeNote, setActiveNote] = useState<string | null>(null);
   const [isLoadingNote, setIsLoadingNote] = useState(false);
   const [open, setOpen] = useState(true);
+  const [lastSaved, setlastSaved] = useState<string | null>(null);
 
   const handleNoteSelect = (noteId: string) => {
     if (noteId === activeNote) return;
@@ -114,18 +116,24 @@ export default function Home() {
             </div>
           ) : (
             <>
+              <span className="flex">
+                <Button
+                  className="mb-2"
+                  onClick={() => {
+                    saveNoteValue(user.uid, activeNote, editorState);
+                    setlastSaved(new Date().toLocaleTimeString());
+                  }}
+                >
+                  <SaveIcon className="mr-2 h-4 w-4" /> Save
+                </Button>
+
+                <p className="ml-4">{lastSaved && `Last saved at ${lastSaved}`}</p>
+              </span>
+
               <Editor
                 editorSerializedState={editorState}
                 onSerializedChange={setEditorState}
               />
-              <Button
-                onClick={() =>
-                  editorState &&
-                  saveNoteValue(user.uid, activeNote, editorState)
-                }
-              >
-                Save Note
-              </Button>
             </>
           )
         ) : (
@@ -136,7 +144,7 @@ export default function Home() {
           </div>
         )}
       </main>
-    </div>
+    </div >
   ) : (
     <Dialog
       open={open}
