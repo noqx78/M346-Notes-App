@@ -88,7 +88,7 @@ export default function Home() {
                   <Link href={button.href} passHref>
                     <Button
                       variant="outline"
-                      className={`w-full sm:w-auto justify-center gap-2 transition-transform hover:scale-105 `}
+                      className={`w-full sm:w-auto justify-center gap-2 transition-transform  `}
                     >
                       {button.icon} {button.text}
                     </Button>

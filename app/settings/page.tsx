@@ -9,11 +9,20 @@ import { useState } from "react";
 import { getAuth, deleteUser } from "firebase/auth";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { useRouter } from "next/navigation";
 
 export default function Home() {
     const { user, loading } = useAuth();
     const [activeNote, setActiveNote] = useState<string | null>(null);
+    const router = useRouter();
     return (
         <div className="flex min-h-screen">
             <div className="w-64 min-w-[16rem] border-r">
@@ -30,17 +39,43 @@ export default function Home() {
                     {user ? (
                         <>
                             <LogoutButton />
-                            <Button
-                                className="ml-2"
-                                variant="destructive"
-                                onClick={() => {
-                                    deleteUser(user);
-                                    deleteDoc(doc(db, "users", user.uid));
-                                    deleteDoc(doc(db, "users", user.uid, "notes"));
-                                }}
-                            >
-                                Delete Account
-                            </Button>
+
+
+                            <Dialog>
+                                <DialogTrigger>
+                                    <Button
+                                        className="ml-2"
+                                        variant="destructive"
+                                    // onClick={() => {
+                                    //     deleteUser(user);
+                                    //     deleteDoc(doc(db, "users", user.uid));
+                                    //     deleteDoc(doc(db, "users", user.uid, "notes"));
+                                    // }}
+                                    >
+                                        Delete Account
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                        <DialogDescription>
+                                            This action cannot be undone. This will permanently delete your account
+                                            and remove your data from our servers.
+                                        </DialogDescription>
+                                        <Button
+                                            className="ml-2"
+                                            variant="destructive"
+                                            onClick={() => {
+                                                deleteUser(user);
+                                                deleteDoc(doc(db, "users", user.uid));
+                                                deleteDoc(doc(db, "users", user.uid, "notes"));
+                                            }}
+                                        >
+                                            Delete Account
+                                        </Button>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
 
                         </>
                     ) : <Link href="/login">
