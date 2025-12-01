@@ -17,6 +17,8 @@
 | <img alt="Lucide Logo" src="https://lucide.dev/logo.dark.svg" width="28">                                                                              | **Lucide**       | Icon Library          |
 
 
+#### Firebase (Firestore) Structure
+<img src="./readmeSrc/firebaseExample.png">
 
 #### Notes
 - not optimized:/
